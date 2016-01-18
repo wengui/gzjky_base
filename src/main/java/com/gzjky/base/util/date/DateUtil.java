@@ -482,4 +482,18 @@ public class DateUtil {
 	public static java.sql.Time convert(LocalTime time) {
 		return new java.sql.Time(time.toDateTimeToday().getMillis());
 	}
+	
+	
+	
+	/**
+	 * 时间差计算
+	 * 
+	 * @param begin，end
+	 * @return long 相差小时数
+	 */
+	public static long dateDiff(Date begin,Date end) {
+		long between=(end.getTime()-begin.getTime())/1000;//除以1000是为了转换成秒   
+		long minute=between%3600/60;   
+		return minute;		
+	}
 }
