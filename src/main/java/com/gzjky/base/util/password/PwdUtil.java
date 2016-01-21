@@ -24,12 +24,13 @@ public class PwdUtil  {
     public static byte[] Encrypt(String strSrc) {
         MessageDigest md=null;
         
-        byte[] bt=strSrc.getBytes();
+        
         try {
+        	byte[] bt=strSrc.getBytes("UTF-8");
             md=MessageDigest.getInstance("SHA-1");
             md.update(bt);
             
-        }catch (NoSuchAlgorithmException e) {
+        }catch (Exception e) {
             System.out.println("Invalid algorithm.");
             return null;
         }
@@ -81,8 +82,29 @@ public class PwdUtil  {
         System.arraycopy(unsaltedPassword, 0, rawSalted, 0, unsaltedPassword.length);
         
         System.arraycopy(saltValue, 0, rawSalted, unsaltedPassword.length, saltValue.length);
-             
-        return rawSalted;
+        
+        
+        //Create the salted hash	
+        MessageDigest md=null;
+        try {
+			md=MessageDigest.getInstance("SHA-1");
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        md.update(rawSalted);
+        
+        byte[] saltedPassword = md.digest();
+		// add the salt value to the salted hash
+
+		byte[] dbPassword  = new byte[saltedPassword.length + saltValue.length];
+		System.arraycopy(saltedPassword, 0, dbPassword, 0, saltedPassword.length);
+        
+        System.arraycopy(saltValue, 0, dbPassword, unsaltedPassword.length, saltValue.length);
+        
+
+		return dbPassword;
+
     }
     
     
