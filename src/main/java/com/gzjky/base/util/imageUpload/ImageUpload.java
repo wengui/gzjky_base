@@ -6,13 +6,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import org.springframework.stereotype.Component;
+
 /**
  * 1.将图片转成2进制保存到数据库
  * 2.将数据库的2进制转成流直接显示在页面上，action.xml返回类型是stream
  * @author yuting
  *
  */
-public class ImageUpload {
+@Component
+public class ImageUpload implements IImageUpload{
 	
 	/**
 	 * 将图片转成2进制
@@ -45,6 +48,20 @@ public class ImageUpload {
 		return by;
 	}
 	
+	/**
+	 * 将图片转成2进制输出
+	 * @return
+	 */
+    public ByteArrayInputStream getImageBinary(File file){      
+
+        // 将文件转成2进制
+        byte[] b = imageToByte(file);
+        
+        ByteArrayInputStream inputStream = convertBytesToStream(b);
+        
+        return inputStream;
+    }
+	
 	
 	/**
 	 * 将byte[]转换成ByteArrayInputStream用于在页面显示
@@ -53,7 +70,7 @@ public class ImageUpload {
 	 *            
 	 * @return ByteArrayInputStream 流
 	 */
-	private static ByteArrayInputStream convertBytesToStream(byte[] image) {
+	public ByteArrayInputStream convertBytesToStream(byte[] image) {
 
 		ByteArrayInputStream inputStream = new ByteArrayInputStream(image);
 
