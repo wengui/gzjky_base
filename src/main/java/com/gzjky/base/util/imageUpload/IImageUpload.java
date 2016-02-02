@@ -28,4 +28,11 @@ public interface IImageUpload {
 	 * @return ByteArrayInputStream 流
 	 */
     public ByteArrayInputStream convertBytesToStream(byte[] image);
+    
+    /**
+     * 对图片进行压缩处理
+     * @param oldFile
+     * @return
+     */
+    public byte[] zipImageFile(File oldFile);
 }
